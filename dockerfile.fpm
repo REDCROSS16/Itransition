@@ -1,0 +1,40 @@
+FROM php:8.1.7-fpm-alpine3.16
+ENV COMPOSER_ALLOW_SUPERUSER 1
+
+# Mirror for downloading
+# RUN echo -e "http://nl.alpinelinux.org/alpine/v3.16/main\nhttp://nl.alpinelinux.org/alpine/v3.16/community" > /etc/apk/repositories
+
+RUN apk add --no-cache php81-xdebug alpine-sdk php81-xdebug autoconf freetype-dev redis \
+libwebp-dev python3 nano openssl libressl-dev gmp-dev mysql-client git curl libpng-dev \
+libxml2-dev libjpeg-turbo-dev zip libzip-dev unzip nginx supervisor linux-headers oniguruma-dev bash
+
+RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath
+RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-webp=/usr/include/  --with-jpeg=/usr/include/
+RUN docker-php-ext-install gd
+RUN docker-php-ext-configure zip
+RUN docker-php-ext-install zip
+RUN docker-php-ext-install pdo pdo_mysql
+RUN pecl install xdebug-3.3.1
+RUN docker-php-ext-enable xdebug
+
+RUN mkdir -p /usr/src/php/ext/redis; \
+	curl -fsSL https://pecl.php.net/get/redis --ipv4 | tar xvz -C "/usr/src/php/ext/redis" --strip 1; \
+	docker-php-ext-install redis;
+
+# Get latest Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+COPY --chown=www-data:www-data . /var/www/html/
+RUN chmod 777 /var/www/html/docker/run.sh
+
+COPY docker/supervisor/supervisor.conf /etc/supervisord.conf
+COPY docker/php/php.ini /usr/local/etc/php/conf.d/app.ini
+COPY docker/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
+
+# Set working directory
+WORKDIR /var/www/html
+
+EXPOSE 80
+
+CMD ["sh", "/var/www/html/docker/run.sh"]
