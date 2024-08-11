@@ -1,0 +1,66 @@
+//TODO:
+//    /**
+//     * @return void
+//     * @throws \Exception
+//     */
+//    #[Test]
+//    public function test_it_validate_failed_stock(): void
+//    {
+//        $failedValues = [
+//            self::MOCK_TEXT,
+//            self::MOCK_TEXT,
+//            self::MOCK_TEXT,
+//            self::FAILED_STOCK,
+//            self::SUCCESS_PRICE,
+//            null
+//        ];
+//
+//        $this->assertFalse(ImportValidator::validate(
+//        $this->getDTO($failedValues)
+//            )
+//        );
+//    }
+
+//    /**
+//     * @return void
+//     * @throws \Exception
+//     */
+//    #[Test]
+//    public function test_it_validate_failed_min_price(): void
+//    {
+//        $failedValues = [
+//            self::MOCK_TEXT,
+//            self::MOCK_TEXT,
+//            self::MOCK_TEXT,
+//            self::SUCCESS_STOCK,
+//            self::FAILED_MIN_PRICE,
+//            null
+//        ];
+//
+//        $this->assertFalse(ImportValidator::validate(
+//            $this->getDTO($failedValues)
+//            )
+//        );
+//    }
+
+//    /**
+//     * @return void
+//     * @throws \Exception
+//     */
+//    #[Test]
+//    public function test_it_validate_failed_max_price(): void
+//    {
+//        $failedValues = [
+//            self::MOCK_TEXT,
+//            self::MOCK_TEXT,
+//            self::MOCK_TEXT,
+//            self::SUCCESS_STOCK,
+//            self::FAILED_MAX_PRICE,
+//            null
+//        ];
+//
+//        $this->assertFalse(ImportValidator::validate(
+//            $this->getDTO($failedValues)
+//            )
+//        );
+//    }
